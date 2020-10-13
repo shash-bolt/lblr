@@ -1,6 +1,10 @@
 package com.lblr;
 
 import com.facebook.react.ReactActivity;
+import com.rnfs.RNFSPackage;
+
+import java.util.Arrays;
+import java.util.List;
 
 public class MainActivity extends ReactActivity {
 
@@ -12,4 +16,12 @@ public class MainActivity extends ReactActivity {
   protected String getMainComponentName() {
     return "lblr";
   }
+
+  // @Override
+  //   protected List<ReactPackage> getPackages() {
+  //     return Arrays.<ReactPackage>asList(
+  //       new MainReactPackage(), // <---- add comma 
+  //       new RNFSPackage() // <---------- add package 
+  //     );
+  //   }
 }

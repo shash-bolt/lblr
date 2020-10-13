@@ -9,9 +9,9 @@ const App = () => {
   return (
     <>
       <StatusBar barStyle="light-content" />
-      {/* <WelcomePage/> */}
+      <WelcomePage/>
       {/* <NewLabelPage/> */}
-      <ScanPage/>
+      {/* <ScanPage/> */}
       
     </>
   );
