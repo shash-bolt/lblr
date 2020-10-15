@@ -7,13 +7,12 @@ import {
   FlatList,
   Modal,
   TouchableHighlight,
-  ToastAndroid,
 } from 'react-native';
 import * as RNFS from 'react-native-fs';
 
-import styles from '../styles/ItemListPageStyle';
+import styles from '../styles/StoreListPageStyle';
 import ListItemComp from '../components/ListItemComp';
-import {updateItem, addItemToList, removeItemfromList, addToKart} from '../components/fileOps';
+import {addToKart, strikeKartItem, removeFromKart} from '../components/fileOps';
 
 export default function WelcomeComp() {
   const [items, setItems] = useState(new Array());
@@ -27,8 +26,7 @@ export default function WelcomeComp() {
   
   const [addItem, setAddItem] = useState('');
 
-  var HPath = RNFS.DocumentDirectoryPath + '/LabelsHeading/HeadingList.json';
-  var LPath = RNFS.DocumentDirectoryPath+ '/LabelsData' + '/testfile.json';//need to get data from props + navigation
+  var LPath = RNFS.DocumentDirectoryPath+ '/ShopKart/shopping.json';
 
 
   useEffect(() => {
@@ -38,7 +36,7 @@ export default function WelcomeComp() {
         console.log(res);
         var LData = JSON.parse(res);
         setItems(LData.data);
-        setCurrHeader({file: 'testfile', title: 'Test Chopper'}) // get data from props
+        //setCurrHeader({file: 'testfile', title: 'Test Chopper'}) // get data from props
       })
       .catch((e) => {
         console.log(e);
@@ -64,7 +62,7 @@ export default function WelcomeComp() {
 
             <TouchableHighlight
               onPress={() => {
-                updateItem(currHeader.file, currItem.item).then((res) => {                  
+                strikeKartItem(currItem.item).then((res) => {                  
                   setToggle(!toggle);
                 });
               }}>
@@ -72,20 +70,12 @@ export default function WelcomeComp() {
             </TouchableHighlight>
 
             <TouchableHighlight onPress={() => {
-              removeItemfromList(currHeader.file, currItem.item).then((res) => {  
+              removeFromKart(currItem.item).then((res) => {  
                 setModalVisible(!modalVisible);                
                 setToggle(!toggle);
               });
             }}>
               <Text style={styles.modalText}>Delete</Text>
-            </TouchableHighlight>
-
-            <TouchableHighlight onPress={() => {
-              addToKart(currItem.item).then(()=>{
-                ToastAndroid.show("Added to Kart", ToastAndroid.SHORT);
-              })
-            }}>
-              <Text style={styles.modalText}>Add to Cart</Text>
             </TouchableHighlight>
 
             <TouchableHighlight
@@ -127,7 +117,7 @@ export default function WelcomeComp() {
             <TouchableHighlight
               style={styles.openButton}
               onPress={() => {
-                addItemToList(currHeader.file, addItem).then((res) => {
+               addToKart(addItem).then((res) => {
                   //console.log("res: "+res);
                   setAddItemModal(!addItemModal);
                   setToggle(!toggle);

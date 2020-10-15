@@ -31,12 +31,12 @@ export function initSetup() {
   console.log('Items created');
   //shopping Kart
   RNFS.mkdir(shopKart);
-  var SPath = labelData + '/shopping.json';
+  var SPath = shopKart + '/shopping.json';
   var SData = {
     data: [
-      {item: 'test Item 1', strikethrough: true},
-      {item: 'test Item 2', strikethrough: false},
-      {item: 'test Item 3', strikethrough: false},
+      {item: 'ST Item 1', strikethrough: true},
+      {item: 'ST Item 2', strikethrough: false},
+      {item: 'ST Item 3', strikethrough: false},
     ],
   };
   RNFS.writeFile(SPath, JSON.stringify(SData));
@@ -100,25 +100,33 @@ export function updateHeader(qrImage, newLabel) {
   });
 }
 
-export function addItem(qrImage, item) {
-  var LPath = labelData + '/' + qrImage + '.json';
-  RNFS.readFile(LPath).then((res) => {
-    var LData = JSON.parse(res);
-    var nItem = {item: item, strikethrough: false};
-    LData.data.push(nItem);
-    RNFS.writeFile(LPath, JSON.stringify(LData));
+export function addItemToList(qrImage, item) {
+  return new Promise(function (resolve, reject) {
+    var LPath = labelData + '/' + qrImage + '.json';
+    console.log(qrImage);
+    console.log(item);
+    RNFS.readFile(LPath).then((res) => {
+      var LData = JSON.parse(res);
+      var nItem = {item: item, strikethrough: false};
+      LData.data.push(nItem);
+      RNFS.writeFile(LPath, JSON.stringify(LData)).then(resolve('Done'));
+    });
   });
 }
 
-export function removeItem(qrImage, remItem) {
-  var LPath = labelData + '/' + qrImage + '.json';
-  RNFS.readFile(LPath).then((res) => {
-    var LData = JSON.parse(res);
-    var index = LData.data.findIndex((it) => it.item === remItem);
-    if (index > -1) {
-      LData.data.splice(index, 1);
-    }
-    RNFS.writeFile(LPath, JSON.stringify(LData));
+export function removeItemfromList(qrImage, remItem) {
+  return new Promise(function (resolve, reject) {
+    var LPath = labelData + '/' + qrImage + '.json';
+    RNFS.readFile(LPath).then((res) => {
+      var LData = JSON.parse(res);
+      var index = LData.data.findIndex((it) => it.item === remItem);
+      if (index > -1) {
+        LData.data.splice(index, 1);
+      }
+      RNFS.unlink(LPath).then(() => {
+        RNFS.writeFile(LPath, JSON.stringify(LData)).then(resolve('Done'));
+      });
+    });
   });
 }
 
@@ -143,33 +151,44 @@ export function updateItem(qrImage, upItem) {
 export function searchItems(srItem) {}
 
 export function addToKart(addItem) {
-  var SPath = labelData + '/shopping.json';
-  RNFS.readFile(SPath).then((res) => {
-    var SData = JSON.parse(res);
-    var nItem = {item: addItem, strikethrough: false};
-    SData.data.push(nItem);
-    RNFS.writeFile(SPath, JSON.stringify(SData));
+  return new Promise(function (resolve, reject) {
+    var SPath = shopKart + '/shopping.json';
+    RNFS.readFile(SPath).then((res) => {
+      var SData = JSON.parse(res);
+      var nItem = {item: addItem, strikethrough: false};
+      SData.data.push(nItem);
+      RNFS.writeFile(SPath, JSON.stringify(SData)).then(resolve('Done'));
+    });
   });
 }
 
 export function removeFromKart(rmItem) {
-  var SPath = labelData + '/shopping.json';
-  RNFS.readFile(SPath).then((res) => {
-    var SData = JSON.parse(res);
-    var index = SData.data.findIndex((it) => it.item === rmItem);
-    if (index > -1) {
-      SData.data.splice(index, 1);
-    }
-    RNFS.writeFile(SPath, JSON.stringify(SData));
+  return new Promise(function (resolve, reject) {
+    var SPath = shopKart + '/shopping.json';
+    RNFS.readFile(SPath).then((res) => {
+      var SData = JSON.parse(res);
+      var index = SData.data.findIndex((it) => it.item === rmItem);
+      if (index > -1) {
+        SData.data.splice(index, 1);
+      }
+      RNFS.unlink(SPath).then(() => {
+        RNFS.writeFile(SPath, JSON.stringify(SData)).then(resolve('Done'));
+      });
+    });
   });
 }
 
 export function strikeKartItem(STItem) {
-  var SPath = labelData + '/shopping.json';
-  RNFS.readFile(SPath).then((res) => {
-    var SData = JSON.parse(res);
-    var index = SData.data.findIndex((it) => it.item === STItem);
-    SData.data[index].strikethrough = !SData.data[index].strikethrough;
-    RNFS.writeFile(SPath, JSON.stringify(SData));
+  return new Promise(function (resolve, reject) {
+    var SPath = shopKart + '/shopping.json';
+    RNFS.readFile(SPath).then((res) => {
+      var SData = JSON.parse(res);
+      var index = SData.data.findIndex((it) => it.item === STItem);
+      SData.data[index].strikethrough = !SData.data[index].strikethrough;
+
+      RNFS.unlink(SPath).then(() => {
+        RNFS.writeFile(SPath, JSON.stringify(SData)).then(resolve('Done'));
+      });
+    });
   });
 }

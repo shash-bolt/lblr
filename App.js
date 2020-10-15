@@ -6,16 +6,18 @@ import NewLabelPage from './pages/NewLabelPage'
 import ScanPage from './pages/ScanPage'
 import HeaderListPage from './pages/HeaderListPage'
 import ItemListPage from './pages/ItemListPage'
+import StoreListPage from './pages/StoreListPage'
 
 const App = () => {
   return (
     <>
       <StatusBar barStyle="light-content" />
       {/* <WelcomePage/> */}
-      {/* <NewLabelPage/> */}
+      <NewLabelPage/>
       {/* <ScanPage/> */}
       {/* <HeaderListPage/> */}
-      <ItemListPage/>
+      {/* <ItemListPage/> */}
+      {/* <StoreListPage/> */}
       
     </>
   );
