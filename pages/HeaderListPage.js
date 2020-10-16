@@ -12,9 +12,9 @@ import * as RNFS from 'react-native-fs';
 
 import styles from '../styles/HeaderListPageStyle';
 import HeaderItemComp from '../components/HeaderItemComp';
-import {updateHeader} from '../components/fileOps';
+import {updateHeader, deleteLabel} from '../components/fileOps';
 
-export default function WelcomeComp() {
+export default function WelcomeComp({ navigation }) {
   const [headers, setHeaders] = useState(new Array());
   const [toggle, setToggle] = useState(true);
   const [modalVisible, setModalVisible] = useState(false);
@@ -38,6 +38,10 @@ export default function WelcomeComp() {
 
   function handleNavigation(item) {
     console.log(' === ' + JSON.stringify(item));
+    navigation.navigate('ItemList',{
+      file:item.file,
+      title:item.title
+    })
   }
 
   function handleModal(item) {    
@@ -62,7 +66,13 @@ export default function WelcomeComp() {
               <Text style={styles.modalText}>Edit Header</Text>
             </TouchableHighlight>
 
-            <TouchableHighlight onPress={() => {}}>
+            <TouchableHighlight onPress={() => {
+              deleteLabel(currHeader.file).then((res) => {
+                //console.log("res: "+res);
+                setModalVisible(!modalVisible);
+                setToggle(!toggle);
+              });
+            }}>
               <Text style={styles.modalText}>Delete</Text>
             </TouchableHighlight>
 

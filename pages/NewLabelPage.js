@@ -1,7 +1,9 @@
 import React, {useState, useEffect} from 'react';
-import {View, TouchableOpacity, Text, TextInput} from 'react-native';
+import {View, TouchableOpacity, Text, TextInput, ToastAndroid} from 'react-native';
 import QRCode from 'react-native-qrcode-svg';
 import styles from '../styles/NewLabelPageStyle';
+
+import {saveLabel} from '../components/fileOps';
 
 export default function WelcomeComp() {
   const [label, setLabel] = useState('');
@@ -63,6 +65,9 @@ export default function WelcomeComp() {
           onPress={() => {
             console.log(qrImage);
             console.log(label);
+            saveLabel(qrImage, label).then(()=>{
+              ToastAndroid.show("Label Created", ToastAndroid.SHORT);
+            })
           }}>
           <Text style={styles.buttonContainerText}>Save</Text>
         </TouchableOpacity>

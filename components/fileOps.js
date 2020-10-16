@@ -44,40 +44,49 @@ export function initSetup() {
 }
 
 export function saveLabel(qrImage, label) {
-  RNFS.readFile(labelHead + '/HeadingList.json')
-    .then((res) => {
-      var curObj = {file: qrImage, title: label};
-      var savedVal = JSON.parse(res);
-      savedVal.data.push(curObj);
-      return JSON.stringify(savedVal);
-    })
-    .then((content) => {
-      var HPath = labelHead + '/HeadingList.json';
-      RNFS.writeFile(HPath, JSON.stringify(content));
-
-      var LPath = labelData + '/' + qrImage + '.json';
-      var LData = {
-        data: [{item: 'Dummy', strikethrough: true}],
-      };
-      RNFS.writeFile(LPath, JSON.stringify(LData));
-    });
+  console.log(qrImage);
+  console.log(label);
+  return new Promise(function (resolve, reject) {
+    var HPath = labelHead + '/HeadingList.json';
+    RNFS.readFile(HPath)
+      .then((res) => {
+        var curObj = {file: qrImage, title: label};
+        var savedVal = JSON.parse(res);
+        savedVal.data.push(curObj);
+        RNFS.writeFile(HPath, JSON.stringify(savedVal));
+      })
+      .then(() => {
+        var LPath = labelData + '/' + qrImage + '.json';
+        var LData = {
+          data: [{item: 'Dummy', strikethrough: true}],
+        };
+        RNFS.writeFile(LPath, JSON.stringify(LData));
+      })
+      .then(resolve('Done'));
+  });
 }
 
 export function deleteLabel(qrImage) {
-  var HPath = labelHead + '/HeadingList.json';
-  var LPath = labelData + '/' + qrImage + '.json';
+  return new Promise(function (resolve, reject) {
+    var HPath = labelHead + '/HeadingList.json';
+    var LPath = labelData + '/' + qrImage + '.json';
 
-  RNFS.readFile(HPath).then((res) => {
-    var HData = JSON.parse(res);
-    //   var HData = {
-    //     data: [{file: 'testfile', title: 'Test File'}],
-    //   };
-    var index = HData.data.findIndex((item) => item.file === qrImage);
-    if (index > -1) {
-      HData.data.splice(index, 1);
-    }
-    RNFS.writeFile(HPath, JSON.stringify(HData));
-    RNFS.unlink(LPath);
+    RNFS.readFile(HPath).then((res) => {
+      var HData = JSON.parse(res);
+      //   var HData = {
+      //     data: [{file: 'testfile', title: 'Test File'}],
+      //   };
+      var index = HData.data.findIndex((item) => item.file === qrImage);
+      if (index > -1) {
+        HData.data.splice(index, 1);
+      }
+
+      RNFS.unlink(LPath);
+
+      RNFS.unlink(HPath).then(() => {
+        RNFS.writeFile(HPath, JSON.stringify(HData)).then(resolve('Done'));
+      });
+    });
   });
 }
 

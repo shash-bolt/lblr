@@ -1,32 +1,32 @@
-import React, { useEffect } from 'react';
+import React, {useEffect} from 'react';
 import {
   ImageBackground,
   View,
   TouchableOpacity,
   Text,
   Image,
-  ToastAndroid
+  ToastAndroid,
 } from 'react-native';
 
-import {initSetup} from '../components/fileOps'
+import {initSetup} from '../components/fileOps';
 import * as RNFS from 'react-native-fs';
 
 import styles from '../styles/WelcomePageStyle';
 
-export default function WelcomeComp() {
+export default function WelcomeComp({navigation}) {
+  const initFilepath =
+    RNFS.DocumentDirectoryPath + '/LabelsHeading' + '/HeadingList.json';
 
-  const initFilepath = RNFS.DocumentDirectoryPath + '/LabelsHeading'+'/HeadingList.json';
-
-  useEffect(()=>{
-    async function initCheck(){
-      if(await RNFS.exists(initFilepath)){
-        ToastAndroid.show("Welcome back !!", ToastAndroid.SHORT);
-      } else{
+  useEffect(() => {
+    async function initCheck() {
+      if (await RNFS.exists(initFilepath)) {
+        ToastAndroid.show('Welcome back !!', ToastAndroid.SHORT);
+      } else {
         initSetup();
       }
     }
-    initCheck();    
-  },[])
+    initCheck();
+  }, []);
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -41,15 +41,27 @@ export default function WelcomeComp() {
           </TouchableOpacity>
         </View>
         <View style={styles.buttonView}>
-          <TouchableOpacity style={styles.buttonContainer} onPress={() => {}}>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => {
+              navigation.navigate('Scan');
+            }}>
             <Text style={styles.buttonContainerText}>Scanner</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.buttonContainer} onPress={() => {}}>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => {
+              navigation.navigate('HeaderList');
+            }}>
             <Text style={styles.buttonContainerText}>My Labels</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.buttonContainer} onPress={() => {}}>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => {
+              navigation.navigate('NewLabel');
+            }}>
             <Text style={styles.buttonContainerText}>Get a New label</Text>
           </TouchableOpacity>
 
@@ -57,7 +69,11 @@ export default function WelcomeComp() {
             <Text style={styles.buttonContainerText}>Print Labels</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.buttonContainer} onPress={() => {}}>
+          <TouchableOpacity
+            style={styles.buttonContainer}
+            onPress={() => {
+              navigation.navigate('StoreList');
+            }}>
             <Text style={styles.buttonContainerText}>Shopping List</Text>
           </TouchableOpacity>
 
