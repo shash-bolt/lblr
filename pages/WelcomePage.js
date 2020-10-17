@@ -33,7 +33,9 @@ export default function WelcomeComp({navigation}) {
         source={require('../assets/boards.jpg')}
         style={styles.backgroundPic}>
         <View style={styles.logoView}>
-          <TouchableOpacity onPress={() => {}}>
+          <TouchableOpacity onPress={() => {
+            navigation.navigate('About');
+          }}>
             <Image
               source={require('../assets/logo.jpg')}
               style={styles.logoPic}

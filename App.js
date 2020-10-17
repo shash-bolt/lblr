@@ -3,6 +3,7 @@ import {View, KeyboardAvoidingView, StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 
+import AboutPage from './pages/AboutPage';
 import WelcomePage from './pages/WelcomePage';
 import NewLabelPage from './pages/NewLabelPage';
 import ScanPage from './pages/ScanPage';
@@ -20,6 +21,11 @@ const App = () => {
       <StatusBar barStyle="light-content" />
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Welcome">
+        <Stack.Screen
+            name="About"
+            options={{headerShown: false}}
+            component={AboutPage}
+          />
           <Stack.Screen
             name="Welcome"
             options={{headerShown: false}}
