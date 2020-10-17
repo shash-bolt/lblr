@@ -54,7 +54,17 @@ export default StyleSheet.create({
    borderBottomWidth: 1
   },
   topContainer:{
-    height: screenHeight*0.8,
+    height: screenHeight*0.1,
+    backgroundColor: 'purple'
+  },
+  topText:{
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 17,
+    fontFamily: 'sans-serif',
+  },
+  middleContainer:{
+    height: screenHeight*0.7,
     backgroundColor: 'green'
   },
   bottomContainer:{

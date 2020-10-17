@@ -60,6 +60,12 @@ export default function WelcomeComp({route, navigation}) {
   return (
     <View>
       <View style={styles.topContainer}>
+        <Text style={styles.topText}>
+            {currHeader.title}
+        </Text>
+
+      </View>
+      <View style={styles.middleContainer}>
         <Modal animationType="slide" transparent={true} visible={modalVisible}>
           <View style={styles.centeredView}>
             <View style={styles.modalView}>

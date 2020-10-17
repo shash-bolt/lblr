@@ -6,7 +6,7 @@ let screenWidth = Dimensions.get("window").width;
 export default StyleSheet.create({
     container: {
         flexDirection: "row",
-        width: screenWidth * 0.8,
+        width: '80%',
         alignSelf: "center"
       },
       listText: {

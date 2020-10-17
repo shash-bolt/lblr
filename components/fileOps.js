@@ -10,10 +10,7 @@ export function initSetup() {
   RNFS.mkdir(labelHead);
   var HPath = labelHead + '/HeadingList.json';
   var HData = {
-    data: [
-      {file: 'testfile', title: 'Test File'},
-      {file: 'testfile2', title: 'Test File 2'},
-    ],
+    data: [{file: 'testfile', title: 'Test File'}],
   };
   RNFS.writeFile(HPath, JSON.stringify(HData));
   console.log('Header created');
@@ -34,9 +31,9 @@ export function initSetup() {
   var SPath = shopKart + '/shopping.json';
   var SData = {
     data: [
-      {item: 'ST Item 1', strikethrough: true},
-      {item: 'ST Item 2', strikethrough: false},
-      {item: 'ST Item 3', strikethrough: false},
+      {item: 'Shopping Item 1', strikethrough: true},
+      {item: 'Shopping Item 2', strikethrough: false},
+      {item: 'Shopping Item 3', strikethrough: false},
     ],
   };
   RNFS.writeFile(SPath, JSON.stringify(SData));
@@ -157,7 +154,107 @@ export function updateItem(qrImage, upItem) {
   });
 }
 
-export function searchItems(srItem) {}
+export function searchItems1(srItem) {
+  var headers = new Array();
+  console.log(srItem);
+  return new Promise(function (resolve, reject) {
+    var HPath = labelHead + '/HeadingList.json';
+    RNFS.readFile(HPath)
+      .then((res) => {
+        return new Promise(function (resolve1, reject) {
+          var HData = JSON.parse(res);
+          HData.data.forEach((item) => {
+            var LPath = labelData + '/' + item.file + '.json';
+            RNFS.readFile(LPath).then((res1) => {
+              return new Promise(function (resolve2, reject) {
+                var LData = JSON.parse(res1);
+                //console.log(res1);
+                console.log('----------');
+                var index = LData.data.findIndex((it) => it.item === srItem);
+                if (index > -1) {
+                  headers.push({
+                    file: item.title,
+                    item: LData.data[index].item,
+                  });
+                  //console.log(headers);
+                }
+              });
+            });
+          });
+          resolve1();
+        });
+      })
+      .then(() => {
+        console.log('return: ' + headers);
+        resolve(headers);
+      });
+  });
+}
+
+export async function searchItems(srItem) {
+  var headers = new Array();
+  console.log(srItem);
+  let res_1 = await getHeader();
+  let res_2 = await loopThruHeaders(res_1);
+   return await returnData(res_2);
+  
+
+  function getHeader() {
+    return new Promise(function (resolve, reject) {
+      var HPath = labelHead + '/HeadingList.json';
+      console.log(1);
+      RNFS.readFile(HPath).then((res) => resolve(res));
+    });
+  }
+
+  function loopThruHeaders(head) {
+    var HData = JSON.parse(head);
+    console.log('second data: ' + head);
+    return new Promise(function (resolve, reject) {
+      looping().then(()=>{
+        console.log(2.3);
+      console.log(headers);
+      resolve();
+      })
+    })
+
+    async function looping() {      
+      for(const item of HData.data){
+        var LPath = labelData + '/' + item.file + '.json';
+        await RNFS.readFile(LPath).then(async (res1) => {
+          await getList(item, res1);
+        });
+      }
+    }  
+    function getList(item, res1) {
+      return new Promise(function (resolve, reject) {
+        var LData = JSON.parse(res1);
+        console.log("2.2");
+        console.log('----------');
+        var index = LData.data.findIndex((it) => it.item === srItem);
+        if (index > -1) {
+          headers.push({
+            file: item.title,
+            item: LData.data[index].item,
+          });
+          console.log(headers);
+        }
+        resolve();
+      });
+    }
+    
+  }
+
+  function returnData() {
+    return new Promise(function (resolve, reject) {
+      console.log(3);
+      console.log('return: ' + JSON.stringify( headers));
+     resolve(headers);
+    });
+  }
+
+
+}
 
 export function addToKart(addItem) {
   return new Promise(function (resolve, reject) {

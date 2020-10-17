@@ -5,9 +5,10 @@ import styles from '../styles/NewLabelPageStyle';
 
 import {saveLabel} from '../components/fileOps';
 
-export default function WelcomeComp() {
+export default function WelcomeComp({ navigation }) {
   const [label, setLabel] = useState('');
   const [qrImage, setqrImage] = useState('');
+  const[save,setSave] = useState(true);
 
   useEffect(() => {
     var date = new Date().getDate(); //Current Date
@@ -60,17 +61,22 @@ export default function WelcomeComp() {
       </View>
 
       <View style={styles.bottomArea}>
-        <TouchableOpacity
+      {save && <TouchableOpacity
           style={styles.buttonStyle}
           onPress={() => {
             console.log(qrImage);
             console.log(label);
             saveLabel(qrImage, label).then(()=>{
               ToastAndroid.show("Label Created", ToastAndroid.SHORT);
+              setSave(false);
+              navigation.navigate('ItemList',{
+                file:qrImage,
+                title:label
+              })
             })
           }}>
           <Text style={styles.buttonContainerText}>Save</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>}
       </View>
     </View>
   );

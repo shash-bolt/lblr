@@ -9,6 +9,8 @@ import ScanPage from './pages/ScanPage';
 import HeaderListPage from './pages/HeaderListPage';
 import ItemListPage from './pages/ItemListPage';
 import StoreListPage from './pages/StoreListPage';
+import PrintLabelsPage from './pages/PrintLabelsPage';
+import ItemSearchPage from './pages/ItemSearchPage';
 
 const Stack = createStackNavigator();
 
@@ -52,11 +54,7 @@ const App = () => {
           />
           <Stack.Screen
             name="ItemList"
-            options={{
-              title: 'Items List',
-              headerStyle: {backgroundColor: 'purple'},
-              headerTitleStyle: {color: 'white', alignSelf: 'flex-start'},
-            }}
+            options={{headerShown: false}}
             component={ItemListPage}
           />
           <Stack.Screen
@@ -68,6 +66,21 @@ const App = () => {
             }}
             component={StoreListPage}
           />
+          <Stack.Screen
+            name="PrintLabels"
+            options={{headerShown: false}}
+            component={PrintLabelsPage}
+          />
+
+          <Stack.Screen
+            name="SearchItems"
+            options={{
+              title: 'Search Page',
+              headerStyle: {backgroundColor: 'purple'},
+              headerTitleStyle: {color: 'white', alignSelf: 'flex-start'},
+            }}
+            component={ItemSearchPage}
+          />
         </Stack.Navigator>
       </NavigationContainer>
       {/* <WelcomePage/> */}
@@ -76,6 +89,8 @@ const App = () => {
       {/* <HeaderListPage/> */}
       {/* <ItemListPage/> */}
       {/* <StoreListPage/> */}
+      {/* <PrintLabelsPage/> */}
+      {/* <ItemSearchPage/> */}
     </>
   );
 };

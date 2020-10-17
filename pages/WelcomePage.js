@@ -65,7 +65,9 @@ export default function WelcomeComp({navigation}) {
             <Text style={styles.buttonContainerText}>Get a New label</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.buttonContainer} onPress={() => {}}>
+          <TouchableOpacity style={styles.buttonContainer} onPress={() => {
+             navigation.navigate('PrintLabels');
+          }}>
             <Text style={styles.buttonContainerText}>Print Labels</Text>
           </TouchableOpacity>
 
@@ -77,7 +79,9 @@ export default function WelcomeComp({navigation}) {
             <Text style={styles.buttonContainerText}>Shopping List</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={styles.buttonContainer} onPress={() => {}}>
+          <TouchableOpacity style={styles.buttonContainer} onPress={() => {
+              navigation.navigate('SearchItems');
+          }}>
             <Text style={styles.buttonContainerText}>Search for Items</Text>
           </TouchableOpacity>
         </View>
